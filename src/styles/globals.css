@@ -1,0 +1,14 @@
+:root {
+  --main: #040407;
+  --muted: #47343b;
+  --inverted: #f7f6f8;
+
+  --accent: #b15350;
+  --accent-muted: #555662;
+  --secondary: #c59aa0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
