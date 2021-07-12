@@ -1,4 +1,4 @@
-const TMDB_API_KEY = "f33f352333249506564efbca4856444d";
+const TMDB_API_KEY = throw Error("add a tmdb api key here")
 
 export async function fetchDiscoverMovies({ page }) {
   const params = new URLSearchParams({
