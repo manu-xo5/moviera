@@ -1,7 +1,5 @@
-// import { Link as LinkImpl} from "react-router-dom";
-
-const LinkImpl = "a";
+import { Link as LinkImpl } from "react-router-dom";
 
 export default function Link({ href, ...props }) {
-  return <LinkImpl href={href} {...props} />;
+  return <LinkImpl to={href} {...props} />;
 }
