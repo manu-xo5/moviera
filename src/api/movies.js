@@ -1,5 +1,10 @@
-const TMDB_API_KEY = "f33f352333249506564efbca4856444d";
+const TMDB_API_KEY = process.env.REACT_APP_TMDB_KEY;
 
+/**
+ * return a list of movies based on params object
+ * @param {{ page: number }} param0
+ * @returns { Promise<any[]> }
+ */
 export async function fetchDiscoverMovies({ page }) {
   const params = new URLSearchParams({
     api_key: TMDB_API_KEY,
@@ -18,14 +23,13 @@ export async function fetchDiscoverMovies({ page }) {
   const jsonData = await res.json();
 
   if (!res.ok) return null;
-
   return jsonData.results;
 }
 
 /**
  * get a array of movies list by movieId
  * @param {{ movieId: number }} param0
- * @returns {any[]}
+ * @returns { Promise<any[]> }
  */
 export async function fetchMovieVideo({ movieId }) {
   const params = new URLSearchParams({
@@ -47,8 +51,29 @@ export async function fetchMovieVideo({ movieId }) {
  *
  * @param {number | string} youtubeKey
  * @param {"sd" | "hq" | "maxres"} quality
- * @returns
+ * @returns {string}
  */
 export function fetchPoster(youtubeKey, quality = "sd") {
   return `https://i.ytimg.com/vi_webp/${youtubeKey}/${quality}default.webp`;
+}
+
+/**
+ * get list of 20 trending movies
+ * returns null on 400, 500 status code
+ * @returns {Promise<any[]> | null}
+ */
+export async function fetchTrendingMovies() {
+  const res = await fetch(
+    `https://api.themoviedb.org/3/trending/movie/week?api_key=${TMDB_API_KEY}`
+  );
+
+  if (!res.ok) return null;
+
+  const jsonData = await res.json();
+  return jsonData.results;
+}
+
+// TODO: search movie by text and filters
+export async function fetchSearchMovies() {
+  throw Error("Not implemented");
 }
