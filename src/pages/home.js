@@ -25,6 +25,8 @@ export default function Home() {
 
   return (
     <div>
+      <Link href="/search">Search</Link>
+
       {/* Discover */}
       <section className={styles.movieGrid}>
         {movies.map(

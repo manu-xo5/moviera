@@ -33,7 +33,7 @@ export async function fetchDiscoverMovies({ page }) {
  */
 export async function fetchMovieVideo({ movieId }) {
   const params = new URLSearchParams({
-    api_key: "f33f352333249506564efbca4856444d",
+    api_key: TMDB_API_KEY,
     language: "en-US",
   });
 
@@ -73,7 +73,25 @@ export async function fetchTrendingMovies() {
   return jsonData.results;
 }
 
-// TODO: search movie by text and filters
-export async function fetchSearchMovies() {
-  throw Error("Not implemented");
+/**
+ * search movie by fuzzy title i.e. query
+ * @param {{ page: number, language: ("en-IN" | "en-US")[], query: string }} param0
+ */
+export async function fetchSearchMovies({ page, language, query }) {
+  const params = new URLSearchParams({
+    page: page,
+    language: language.join(", "),
+    api_key: TMDB_API_KEY,
+    include_adult: false,
+    query: encodeURI(query),
+  });
+
+  const res = await fetch(
+    `https://api.themoviedb.org/3/search/movie?${params.toString()}`
+  );
+
+  if (!res.ok) return null;
+
+  const jsonData = await res.json();
+  return jsonData.results;
 }
