@@ -1,30 +1,33 @@
-import { PlayIcon, PlusSmIcon, CheckIcon } from "@heroicons/react/solid";
-import { fetchMovieVideo } from "api/movies";
+import { CheckIcon, PlayIcon, PlusSmIcon } from "@heroicons/react/solid";
+import { fetchMovieVideo, fetchPoster } from "api/movies";
 import Link from "components/link";
+import Player from "components/player";
 import { useMoviesCtx } from "context/movies";
+import { Actions, useWatchListCtx } from "context/watchlist";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styles from "styles/movie-details.module.css";
-import { fetchPoster } from "api/movies";
-import { Actions, useWatchListCtx } from "context/watchlist";
+
+const initialThumb = {
+  src: "https://m.media-amazon.com/images/M/MV5BMTYyNzVhNTktZmIyMC00MDU1LWJmMjMtYmEzYmIyMDdjZTAwXkEyXkFqcGdeQXVyMTEyMjM2NDc2._V1_FMjpg_UX1280_.jpg",
+  srcSet: "",
+};
 
 export default function Home() {
   const { id } = useParams();
-  const [thumb, setThumb] = useState({
-    src: "https://m.media-amazon.com/images/M/MV5BMTYyNzVhNTktZmIyMC00MDU1LWJmMjMtYmEzYmIyMDdjZTAwXkEyXkFqcGdeQXVyMTEyMjM2NDc2._V1_FMjpg_UX1280_.jpg",
-    srcSet: "",
-  });
-  const { movies, setMovies } = useMoviesCtx();
+  const [thumb, setThumb] = useState(initialThumb);
+  const { movies } = useMoviesCtx();
   const [videos, setVideos] = useState(null);
   const { watchListData, setWatchListData } = useWatchListCtx();
+  const [showPlayer, setShowPlayer] = useState(false);
+  const [selectedVideoIdx, setSelectedVideoIdx] = useState(0);
 
   const movie = movies.find((m) => String(m.id) === String(id));
-
   const isInWatchList = !!watchListData.find((movieId) => movieId === id);
 
   useEffect(() => {
     fetchMovieVideo({ movieId: id }).then(setVideos);
-  }, [id, setMovies]);
+  }, [id]);
 
   return (
     <>
@@ -41,13 +44,13 @@ export default function Home() {
 
         <div className={styles.ctaWrapper}>
           {/* Watch Now Button */}
-          <Link
+          <button
             className={`${styles.ctaBtn} ${styles.watchBtn}`}
-            href={`/movie/${id}/episodes`}
+            onClick={() => setShowPlayer(true)}
           >
             <PlayIcon className={`${styles.ctaIcon} ${styles.watchBtnIcon}`} />
             Watch Now
-          </Link>
+          </button>
 
           {isInWatchList ? (
             <button
@@ -82,6 +85,7 @@ export default function Home() {
             ))}
           </h1>
 
+          {/* Movie Info Wrapper */}
           <section className={styles.detailsWrapper}>
             <div className={styles.detailsFlex}>
               {/* Empty Gap */}
@@ -93,23 +97,20 @@ export default function Home() {
               <small>Fantasy, Drama</small>
             </div>
 
-            <div className={styles.detailsFlex}>
-              <span className={styles.detailsTitle}>The Story</span>
-              <p>
-                {movie.overview}
-                <Link
-                  href={`/movies/${id}/episodes`}
-                  className={styles.readMore}
-                >
-                  Read More &rarr;
-                </Link>
-              </p>
-            </div>
+            {/* Dynamic  Video Player */}
+            {showPlayer && (
+              <Player
+                videos={videos}
+                onClose={() => setShowPlayer(false)}
+                setSelectedVideoIdx={setSelectedVideoIdx}
+                selectedVideoIdx={selectedVideoIdx}
+              />
+            )}
 
+            {/* Trailers images */}
             <div className={styles.detailsFlex}>
               <span className={styles.detailsTitle}>Trailers</span>
 
-              {/* Trailers images */}
               <div className={styles.trailerThumbWrapper}>
                 {(() => {
                   switch (true) {
@@ -126,13 +127,17 @@ export default function Home() {
                     }
 
                     case videos?.length > 0: {
-                      return videos.map((youtubeMeta) => (
+                      return videos.map((youtubeMeta, i) => (
                         <img
                           className={styles.trailerThumb}
                           src={fetchPoster(youtubeMeta.key, "maxres")}
                           width={160}
                           height={100}
                           alt="the witcher 2019 trailer 1"
+                          onClick={() => {
+                            setShowPlayer(true);
+                            setSelectedVideoIdx(i);
+                          }}
                           onMouseEnter={(ev) =>
                             setThumb({
                               src: ev.target.src,
@@ -148,6 +153,19 @@ export default function Home() {
                   }
                 })()}
               </div>
+            </div>
+
+            <div className={styles.detailsFlex}>
+              <span className={styles.detailsTitle}>The Story</span>
+              <p>
+                {movie.overview}
+                <Link
+                  href={`/movies/${id}/episodes`}
+                  className={styles.readMore}
+                >
+                  Read More &rarr;
+                </Link>
+              </p>
             </div>
           </section>
         </div>
