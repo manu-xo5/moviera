@@ -1,0 +1,14 @@
+.chip {
+  --color: var(--o-muted);
+
+  padding: 0.5rem 0.75rem;
+  display: inline-block;
+
+  background: rgba(var(--color), 0.4);
+  border: 0.1rem solid rgb(var(--color));
+  border-radius: 999px;
+
+  color: var(--secondary);
+  line-height: 1;
+  font-size: 0.9rem;
+}

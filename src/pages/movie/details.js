@@ -79,8 +79,7 @@ export default function Home() {
           <h1 className={styles.title}>
             {movie.original_title.split(" ").map((subTitle) => (
               <>
-                {subTitle}
-                <br />
+                {subTitle} <br className={styles.br} />
               </>
             ))}
           </h1>
@@ -98,14 +97,15 @@ export default function Home() {
             </div>
 
             {/* Dynamic  Video Player */}
-            {showPlayer && (
+            <div className={showPlayer ? styles.playerShow : styles.playerHide}>
               <Player
+                key={showPlayer}
                 videos={videos}
                 onClose={() => setShowPlayer(false)}
                 setSelectedVideoIdx={setSelectedVideoIdx}
                 selectedVideoIdx={selectedVideoIdx}
               />
-            )}
+            </div>
 
             {/* Trailers images */}
             <div className={styles.detailsFlex}>

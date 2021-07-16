@@ -5,12 +5,17 @@ const TMDB_API_KEY = process.env.REACT_APP_TMDB_KEY;
  * @param {{ page: number }} param0
  * @returns { Promise<any[]> }
  */
-export async function fetchDiscoverMovies({ page }) {
+export async function fetchDiscoverMovies({
+  page = 1,
+  sortBy = "popularity.desc",
+  genre,
+}) {
   const params = new URLSearchParams({
     api_key: TMDB_API_KEY,
     page: page,
+    sort_by: sortBy,
+    with_genres: genre,
     language: "en-US",
-    sort_by: "popularity.desc",
     include_adult: false,
     include_video: true,
     with_watch_monetization_types: "flatrate",

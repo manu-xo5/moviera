@@ -6,6 +6,14 @@
   --secondary: #c59aa0;
   --accent: #b15350;
   --accent-muted: #555662;
+
+  /* opacity version */
+  --o-main: 4, 4, 7;
+  --o-muted: 71, 52, 59;
+  --o-inverted: 247, 246, 248;
+  --o-secondary: 197, 154, 160;
+  --o-accent: 177, 83, 80;
+  --o-accent-muted: 85, 86, 98;
 }
 
 body {

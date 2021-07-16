@@ -171,3 +171,53 @@
     opacity: 1;
   }
 }
+
+.playerShow {
+  display: block;
+}
+.playerHide {
+  display: none;
+}
+
+@media only screen and (max-width: 786px) {
+  .br,
+  .heroThumb,
+  .heroBlur,
+  .ctaWrapper {
+    display: none;
+  }
+
+  .wrapper {
+    /* used in player for calculating width */
+    --px: 1rem;
+    padding: 0 var(--px);
+    padding-top: 5.875rem;
+  }
+
+  .title {
+    font-size: 0.875rem;
+    font-weight: normal;
+    text-transform: capitalize;
+  }
+
+  .playerHide {
+    display: block;
+  }
+
+  .detailsFlex {
+    gap: 0.5rem;
+    flex-direction: column;
+    max-width: unset;
+
+    font-size: 0.9rem;
+    text-align: justify;
+  }
+
+  .trailerThumbWrapper {
+    max-width: unset;
+  }
+
+  .zIndex10 {
+    z-index: unset;
+  }
+}

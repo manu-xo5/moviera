@@ -72,3 +72,49 @@
   color: var(--accent);
   /* font-weight: 600; */
 }
+
+@media only screen and (max-width: 786px) {
+  .backdrop {
+    display: none;
+  }
+
+  .wrapper {
+    position: static;
+
+    padding-left: 0;
+    padding-right: 0;
+    display: block;
+
+    height: auto;
+    z-index: unset;
+  }
+
+  .player {
+    --width: calc(100vw - (var(--px) * 2));
+
+    padding: 0;
+    width: var(--width);
+    height: calc(0.5625 * var(--width));
+  }
+
+  .controlWrapper {
+    padding: 0.3rem 0;
+    padding-left: 0.4rem;
+    width: calc(100vw - (var(--px) * 2) - 0.4rem);
+    font-size: 0.7rem;
+  }
+
+  .controlBtn {
+    font-size: inherit;
+  }
+
+  .controlBtn svg {
+    width: 1rem;
+    height: 1rem;
+    stroke-width: 0px;
+  }
+
+  .controlBtn svg path {
+    stroke-width: 0.0875rem;
+  }
+}
