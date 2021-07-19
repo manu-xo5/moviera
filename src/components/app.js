@@ -6,6 +6,7 @@ import Search from "pages/search";
 import { MoviesProvider } from "context/movies";
 import { WatchListProvider } from "context/watchlist";
 import Discover from "pages/discover";
+import Navbar from "components/navbar";
 
 export default function App() {
   return (
@@ -13,6 +14,7 @@ export default function App() {
       <MoviesProvider>
         <WatchListProvider>
           <BrowserRouter>
+            <Navbar />
             <Switch>
               <Route path="/movie/:id/details" component={MovieDetails} />
               <Route path="/movie/:id/episodes" component={MovieEpisodes} />
