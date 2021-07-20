@@ -25,8 +25,7 @@ export default function Home() {
 
   return (
     <div>
-      <Link href="/search">Search</Link>
-
+      <h1 style={{ fontSize: 64 }}>Discover</h1>
       {/* Discover */}
       <section className={styles.movieGrid}>
         {movies.map(
@@ -51,8 +50,7 @@ export default function Home() {
         )}
       </section>
 
-      <h1 style={{ fontSize: 128 }}>Trending</h1>
-      <hr />
+      <h1 style={{ fontSize: 64 }}>Trending</h1>
 
       {/* Treding Movies */}
       <section className={styles.movieGrid}>

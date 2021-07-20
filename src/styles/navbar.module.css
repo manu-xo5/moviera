@@ -1,5 +1,8 @@
 .wrapper {
   padding: 1rem;
+  padding-left: 5rem;
+  gap: 0rem;
+
   display: flex;
   align-items: center;
 
@@ -11,7 +14,6 @@
 }
 
 .logo {
-  margin-left: 4rem;
   background: rgb(177, 83, 80);
   background: linear-gradient(
     90deg,
@@ -23,16 +25,17 @@
   -webkit-background-clip: text;
 
   color: transparent;
-  font-size: 3rem;
+  font-size: 4.5vw;
   font-weight: bolder;
   letter-spacing: 0.1rem;
 }
 
 .link {
-  margin-left: 9.75rem;
+  max-width: 50vw;
+  flex: 1;
   display: flex;
   align-items: center;
-  gap: 4rem;
+  justify-content: space-around;
 
   color: var(--accent-muted);
   font-size: 1.125rem;
@@ -47,6 +50,10 @@
 }
 
 @media only screen and (max-width: 768px) {
+  .wrapper {
+    padding-left: 1rem;
+  }
+
   .baseBtn {
     display: block;
     width: 1.4rem;
@@ -61,6 +68,7 @@
 
   .link {
     --x: -100%;
+    max-width: 100%;
     position: fixed;
     top: 0;
     left: 0;

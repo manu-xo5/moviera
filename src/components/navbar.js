@@ -15,7 +15,9 @@ export default function Navbar() {
       <MenuIcon className={styles.baseBtn} onClick={() => setShowMenu(true)} />
 
       {/* Logo */}
-      <span className={styles.logo}>Moviera</span>
+      <Link className={styles.logo} href="/">
+        <span>Moviera</span>
+      </Link>
 
       {/* Mobile Only SearchButton */}
       <SearchIcon

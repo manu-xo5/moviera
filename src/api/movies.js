@@ -10,15 +10,17 @@ export async function fetchDiscoverMovies({
   sortBy = "popularity.desc",
   genre,
 }) {
-  const params = new URLSearchParams({
+  const filters = {
     api_key: TMDB_API_KEY,
     page: page,
     sort_by: sortBy,
-    with_genres: genre,
+  };
+  if (genre) filters.with_genres = genre;
+
+  const params = new URLSearchParams({
     language: "en-US",
     include_adult: false,
-    include_video: true,
-    with_watch_monetization_types: "flatrate",
+    ...filters,
   });
 
   const res = await fetch(
