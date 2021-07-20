@@ -1,0 +1,104 @@
+.title {
+  padding-top: 2rem;
+  text-align: center;
+}
+
+.searchWrapper {
+  margin: 0 auto;
+  padding-top: 2rem;
+  gap: 0.2rem;
+
+  display: flex;
+  max-width: 60vw;
+}
+
+.searchInput {
+  padding: 1rem;
+
+  flex: 1;
+  background: var(--accent-muted);
+  border: none;
+
+  color: var(--inverted);
+}
+
+.searchBtn {
+  padding: 1rem;
+
+  border: none;
+  background: var(--accent);
+
+  color: var(--inverted);
+}
+
+.languageLabel {
+  padding: 1rem;
+
+  background: var(--accent-muted);
+  color: var(--inverted);
+}
+
+.languageOption {
+  padding: 1rem;
+  gap: 0.5rem;
+  display: flex;
+  align-items: center;
+
+  background: var(--accent-muted);
+}
+
+/* movie grid */
+.movieGrid {
+  padding: 0 1rem;
+  padding-top: 4rem;
+  gap: 1rem;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+}
+
+.movieGridItem {
+  position: relative;
+  display: block;
+}
+
+.moviePoster {
+  position: relative;
+  width: 100%;
+}
+
+/* Page Controls */
+.pageControlWrapper {
+  margin: 0 auto;
+  padding: 0 1rem;
+  padding-top: 4rem;
+
+  display: flex;
+  max-width: 15rem;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pageControlBtn {
+  padding: 0.25rem 1rem;
+
+  background: var(--accent-muted);
+  border: none;
+  border-radius: 5px;
+
+  color: var(--inverted);
+
+  cursor: pointer;
+}
+
+/* error */
+.error {
+  padding-top: 3rem;
+}
+
+@media only screen and (max-width: 786px) {
+  .searchWrapper {
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+}

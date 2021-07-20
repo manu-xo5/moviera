@@ -2,6 +2,9 @@ import React, { useEffect, useReducer, useState } from "react";
 import { fetchSearchMovies } from "api/movies";
 import Link from "components/link";
 import { useMoviesCtx } from "context/movies";
+import styles from "styles/search.module.css";
+import Dropdown from "components/dropdown";
+import { clsx } from "js/clsx";
 
 const langs = ["en-IN", "en-US"];
 const initialFilters = {
@@ -36,6 +39,8 @@ export default function Search() {
 
   useEffect(() => {
     // check if search query is empty
+    if (!filters.query) return;
+
     fetchSearchMovies(filters)
       .then((searchMovies) => (searchMovies == null ? [] : searchMovies))
       .then((searchMovies) => {
@@ -47,65 +52,46 @@ export default function Search() {
 
   return (
     <div>
-      <form onSubmit={handleSearch}>
-        <fieldset>
-          <legend>Language:</legend>
+      <h1 className={styles.title}>
+        Find <span className="font-bold">Perfect</span> movie for the evening
+      </h1>
 
-          <ul>
-            {langs.map((languageName) => (
-              <li key={languageName}>
-                --{" "}
-                <label>
-                  {languageName}
-                  <input
-                    value={languageName}
-                    name="language"
-                    id="language"
-                    type="checkbox"
-                    defaultChecked={filters.language.includes(languageName)}
-                  />
-                </label>{" "}
-                --
-              </li>
-            ))}
-          </ul>
-        </fieldset>
+      <form onSubmit={handleSearch} className={styles.searchWrapper}>
+        <input
+          className={styles.searchInput}
+          placeholder="movie name"
+          name="query"
+        />
 
-        <input placeholder="movie name" name="query" />
-        <button>Search</button>
+        <Dropdown label={<p className={styles.languageLabel}>Language</p>}>
+          {langs.map((languageName) => (
+            <label key={languageName} className={styles.languageOption}>
+              <input
+                value={languageName}
+                name="language"
+                id="language"
+                type="checkbox"
+                defaultChecked={filters.language.includes(languageName)}
+              />
+              {languageName}
+            </label>
+          ))}
+        </Dropdown>
+
+        <button type="submit" className={styles.searchBtn}>
+          Search
+        </button>
       </form>
 
-      <hr />
-
-      <button
-        onClick={() => setFilters((prev) => ({ ...prev, page: prev.page - 1 }))}
-        type="button"
-        disabled={filters.page === 1}
-      >
-        Prev
-      </button>
-
-      <span>{filters.page}</span>
-
-      <button
-        onClick={() => setFilters((prev) => ({ ...prev, page: prev.page + 1 }))}
-        type="button"
-        disabled={!hasNextPage}
-      >
-        Next
-      </button>
-
-      <hr />
-
-      <ul>
+      <ul className={styles.movieGrid}>
         {(() => {
           switch (true) {
             case searchData == null: {
               return Array(4)
                 .fill(0)
                 .map((_, i) => (
-                  <div key={i}>
-                    <img src="#" alt="" width="300px" height="450px" />
+                  <div key={i} className={styles.movieGridItem}>
+                    <img className={styles.moviePoster} src="#" alt="" />
                   </div>
                 ));
             }
@@ -113,20 +99,23 @@ export default function Search() {
             case searchData.length > 0: {
               return searchData.map((movie) => (
                 <li key={movie.id}>
-                  <Link href={`/movie/${movie.id}/details`}>
-                    <div>
-                      <img
-                        src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
-                        alt={`${movie.original_title} poster`}
-                      />
-                      <p>{movie.original_title}</p>
-                      <p>
-                        <small>Released on: {movie.release_date}</small>
-                      </p>
-                      <p>
-                        <small>Rating: {movie.vote_average}</small>
-                      </p>
-                    </div>
+                  <Link
+                    href={`/movie/${movie.id}/details`}
+                    className={styles.movieGridItem}
+                  >
+                    <img
+                      className={styles.moviePoster}
+                      src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                      alt={`${movie.original_title} poster`}
+                      loading="lazy"
+                    />
+                    <p>{movie.original_title}</p>
+                    <p>
+                      <small>Released on: {movie.release_date}</small>
+                    </p>
+                    <p>
+                      <small>Rating: {movie.vote_average}</small>
+                    </p>
                   </Link>
                 </li>
               ));
@@ -134,7 +123,7 @@ export default function Search() {
 
             default:
               return (
-                <p>
+                <p className={clsx("text-center", styles.error)}>
                   ..** Nothing matched to your query. try different spelling
                   maybe. **..
                 </p>
@@ -142,6 +131,35 @@ export default function Search() {
           }
         })()}
       </ul>
+
+      {/* Page Controls */}
+      {searchData != null && (
+        <div className={styles.pageControlWrapper}>
+          <button
+            className={styles.pageControlBtn}
+            onClick={() =>
+              setFilters((prev) => ({ ...prev, page: prev.page - 1 }))
+            }
+            type="button"
+            disabled={filters.page === 1}
+          >
+            Prev
+          </button>
+
+          <span>{filters.page}</span>
+
+          <button
+            className={styles.pageControlBtn}
+            onClick={() =>
+              setFilters((prev) => ({ ...prev, page: prev.page + 1 }))
+            }
+            type="button"
+            disabled={!hasNextPage}
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   );
 }

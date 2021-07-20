@@ -1,0 +1,16 @@
+.dropdown {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+
+  border: 0.1rem solid var(--secondary);
+  z-index: 100;
+}
+
+.dropdown > * + * {
+  border-top: 0.1rem solid var(--secondary);
+}
+
+.icon {
+  width: 2rem;
+}
