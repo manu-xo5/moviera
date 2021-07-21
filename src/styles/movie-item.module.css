@@ -1,0 +1,33 @@
+.wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.posterImg {
+  width: 100%;
+
+  transition: transform 200ms ease;
+  transform-origin: top center;
+}
+
+.details {
+  padding: 1rem;
+}
+
+@media (hover) {
+  .details {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    bottom: -100%;
+
+    transition: bottom 250ms ease;
+  }
+
+  .wrapper:hover .posterImg {
+    transform: scale(0.8);
+  }
+  .wrapper:hover .details {
+    bottom: 0;
+  }
+}

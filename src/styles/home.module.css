@@ -1,10 +1,4 @@
 .movieGrid {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.poster {
-  width: 300px;
-  height: calc(300px * 3 / 2);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(18.75rem, 1fr));
 }

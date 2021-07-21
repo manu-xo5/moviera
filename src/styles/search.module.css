@@ -62,11 +62,6 @@
   display: block;
 }
 
-.moviePoster {
-  position: relative;
-  width: 100%;
-}
-
 /* Page Controls */
 .pageControlWrapper {
   margin: 0 auto;
