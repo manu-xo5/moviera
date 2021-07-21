@@ -1,0 +1,33 @@
+.title {
+  margin-left: 5rem;
+  margin-top: 5rem;
+  margin-bottom: 0.5rem;
+}
+
+.movieItem {
+  position: relative;
+}
+
+.removeBtn {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  padding: 0.5rem 0.5rem 1rem 1rem;
+
+  background: var(--accent);
+  border: none;
+  border-bottom-left-radius: 999px;
+
+  cursor: pointer;
+}
+.removeBtn:hover {
+  color: var(--inverted);
+}
+
+.error {
+  margin: 0 auto;
+  text-align: center;
+  color: var(--muted);
+  font-size: 1.1rem;
+}
