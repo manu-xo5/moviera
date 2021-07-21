@@ -1,13 +1,17 @@
 import { fetchGenres } from "api/genres";
 import { fetchDiscoverMovies } from "api/movies";
-import Link from "components/link";
 import Chip from "components/chip";
+import Link from "components/link";
+import { useMoviesCtx } from "context/movies";
 import { useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
-import { useMoviesCtx } from "context/movies";
+import styles from "styles/discover.module.css";
+import MovieItem from "components/movie-item";
+import homeS from "styles/home.module.css";
+import { clsx } from "js/clsx";
 
 const defaultFilters = {
-  sortBy: "popular",
+  sortBy: "popularity.desc",
 };
 
 export default function Discover() {
@@ -46,30 +50,31 @@ export default function Discover() {
     history.push("/discover?" + params.toString());
   }
 
-  console.log(filters);
-
   return (
     <div style={{ background: "var(--main)", minHeight: "100vh" }}>
       {/* Top Filter Bar Wrapper */}
-      <div>
-        <h1>Movies</h1>
+      <div className={styles.titleWrapper}>
+        <h1 className={styles.title}>Movies</h1>
 
         {/* Sort By */}
-        <select onChange={(ev) => handleSearch({ sortBy: ev.target.value })}>
-          {/* popularity.desc, release_date.desc, vote_average.desc, vote_count.desc
-           */}
+        <select
+          className={styles.sortBy}
+          onChange={(ev) => handleSearch({ sortBy: ev.target.value })}
+        >
           {[
-            "popularity.desc",
-            "release_date.desc",
-            "vote_average.desc",
-            "vote_count.desc",
-          ].map((sortOpt) => (
-            <option selected={filters.sortBy === sortOpt}>{sortOpt}</option>
+            ["Popularity", "popularity.desc"],
+            ["Release Date", "release_date.desc"],
+            ["Rating", "vote_average.desc"],
+            ["Vote Counts", "vote_count.desc"],
+          ].map(([optName, optValue]) => (
+            <option value={optValue} selected={filters.sortBy === optValue}>
+              {optName}
+            </option>
           ))}
         </select>
       </div>
 
-      <section>
+      <div className={styles.genreList}>
         {(() => {
           switch (true) {
             // Loading Screen
@@ -106,36 +111,42 @@ export default function Discover() {
               return <p>Something went wrong</p>;
           }
         })()}
-      </section>
+      </div>
 
-      <section>
+      <ul className={clsx(homeS.movieGrid, styles.movieGrid)}>
         {(() => {
           switch (true) {
             // Loading Screen
             case discover == null:
               return Array.from({ length: 3 }).map((_, idx) => (
-                <img key={idx} src="#" alt="" />
+                <li key={idx}>
+                  <img src="#" alt="" />
+                </li>
               ));
 
             // Render Movie Poster
             case discover.length > 0:
-              return discover.map((movie) => (
-                <Link href={`/movie/${movie.id}/details`}>
-                  <img
-                    key={movie.id}
-                    style={{ minHeight: 450, minWidth: 300 }}
-                    src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
-                    alt={`${movie.original_title} poster`}
-                  />
-                </Link>
-              ));
+              return discover.map(
+                ({ id, poster_path, release_date, vote_average, title }) => (
+                  <li key={id}>
+                    <Link href={`/movie/${id}/details`}>
+                      <MovieItem
+                        posterPath={poster_path}
+                        title={title}
+                        voteRating={vote_average}
+                        releaseDate={release_date}
+                      />
+                    </Link>
+                  </li>
+                )
+              );
 
             // Error State
             default:
-              return <p>Something went wrong</p>;
+              return <li>Something went wrong</li>;
           }
         })()}
-      </section>
+      </ul>
     </div>
   );
 }
