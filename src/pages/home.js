@@ -4,6 +4,7 @@ import styles from "styles/home.module.css";
 import { useMoviesCtx } from "context/movies";
 import { fetchDiscoverMovies, fetchTrendingMovies } from "api/movies";
 import MovieItem from "components/movie-item";
+import { ArrowDownIcon } from "@heroicons/react/solid";
 
 export default function Home() {
   const [page, setPage] = useState(1);
@@ -26,7 +27,7 @@ export default function Home() {
 
   return (
     <div>
-      <h1 style={{ fontSize: 64 }}>Discover</h1>
+      <h1 className={styles.sectionTitle}>Discover</h1>
       {/* Discover */}
       <ul className={styles.movieGrid}>
         {movies.map(
@@ -45,10 +46,19 @@ export default function Home() {
         )}
       </ul>
 
-      <h1 style={{ fontSize: 64 }}>Trending</h1>
+      <div>
+        <button
+          className={styles.loadMoreBtn}
+          onClick={() => setPage((l) => ++l)}
+        >
+          Load More <ArrowDownIcon width="1rem" />
+        </button>
+      </div>
+
+      <h1 className={styles.sectionTitle}>Trending</h1>
 
       {/* Treding Movies */}
-      <section className={styles.movieGrid}>
+      <ul className={styles.movieGrid}>
         {/* Conditional Rendering using switch statement :)) */}
         {(() => {
           switch (true) {
@@ -70,24 +80,18 @@ export default function Home() {
             }
 
             case trendingMovies.length > 0: {
-              return trendingMovies.map((movie) => (
-                <Link key={movie.id} href={`/movie/${movie.id}/details`}>
-                  <div>
-                    <img
-                      className={styles.poster}
-                      src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
-                      alt={`${movie.original_title} poster`}
+              return trendingMovies.map(
+                ({ release_date, title, poster_path, vote_average, id }) => (
+                  <Link key={id} href={`/movie/${id}/details`}>
+                    <MovieItem
+                      posterPath={poster_path}
+                      title={title}
+                      voteRating={vote_average}
+                      releaseDate={release_date}
                     />
-                    <p>{movie.original_title}</p>
-                    <p>
-                      <small>Released on: {movie.release_date}</small>
-                    </p>
-                    <p>
-                      <small>Rating: {movie.vote_average}</small>
-                    </p>
-                  </div>
-                </Link>
-              ));
+                  </Link>
+                )
+              );
             }
 
             default: {
@@ -95,9 +99,7 @@ export default function Home() {
             }
           }
         })()}
-      </section>
-
-      <button onClick={() => setPage((l) => ++l)}>Load More ({page})</button>
+      </ul>
     </div>
   );
 }

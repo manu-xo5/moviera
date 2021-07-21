@@ -1,4 +1,38 @@
 .movieGrid {
+  padding: 0 1rem;
   display: grid;
+  gap: 3rem 0;
   grid-template-columns: repeat(auto-fit, minmax(18.75rem, 1fr));
+}
+
+.sectionTitle {
+  margin-left: 5rem;
+  margin-top: 5rem;
+  margin-bottom: 0.5rem;
+  font-size: 2.5rem;
+}
+
+/* Button styles */
+.loadMoreBtn {
+  margin: 0 auto;
+  margin-top: 2rem;
+  padding: 0.25rem 0.75rem;
+  padding-right: 0.5rem;
+
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  background: none;
+  border: none;
+  border-radius: 5px;
+
+  color: var(--inverted);
+
+  cursor: pointer;
+  transition: background-color 200ms ease;
+}
+
+.loadMoreBtn:hover {
+  background-color: rgba(var(--o-accent-muted), 0.3);
 }
