@@ -82,6 +82,7 @@
     background-color: var(--muted);
 
     transform: translateX(var(--x));
+    z-index: 10;
   }
 
   .linkItem {
