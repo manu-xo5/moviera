@@ -5,6 +5,7 @@ import { useMoviesCtx } from "context/movies";
 import styles from "styles/search.module.css";
 import Dropdown from "components/dropdown";
 import { clsx } from "js/clsx";
+import MovieItem from "components/movie-item";
 
 const langs = ["en-IN", "en-US"];
 const initialFilters = {
@@ -103,19 +104,12 @@ export default function Search() {
                     href={`/movie/${movie.id}/details`}
                     className={styles.movieGridItem}
                   >
-                    <img
-                      className={styles.moviePoster}
-                      src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                      alt={`${movie.original_title} poster`}
-                      loading="lazy"
+                    <MovieItem
+                      posterPath={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                      releaseDate={movie.release_date}
+                      title={movie.original_title}
+                      voteRating={movie.vote_average}
                     />
-                    <p>{movie.original_title}</p>
-                    <p>
-                      <small>Released on: {movie.release_date}</small>
-                    </p>
-                    <p>
-                      <small>Rating: {movie.vote_average}</small>
-                    </p>
                   </Link>
                 </li>
               ));
@@ -133,7 +127,7 @@ export default function Search() {
       </ul>
 
       {/* Page Controls */}
-      {searchData != null && (
+      {searchData?.length > 0 && (
         <div className={styles.pageControlWrapper}>
           <button
             className={styles.pageControlBtn}

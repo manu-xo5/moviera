@@ -11,4 +11,6 @@
   color: var(--secondary);
   line-height: 1;
   font-size: 0.9rem;
+
+  cursor: pointer;
 }

@@ -15,7 +15,6 @@ const initialThumb = {
 
 export default function Home() {
   const { id } = useParams();
-  const [thumb, setThumb] = useState(initialThumb);
   const { movies } = useMoviesCtx();
   const [videos, setVideos] = useState(null);
   const { watchListData, setWatchListData } = useWatchListCtx();
@@ -23,6 +22,9 @@ export default function Home() {
   const [selectedVideoIdx, setSelectedVideoIdx] = useState(0);
 
   const movie = movies.find((m) => String(m.id) === String(id));
+  const [thumb, setThumb] = useState({
+    src: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+  });
   const isInWatchList = !!watchListData.find((movieId) => movieId === id);
 
   useEffect(() => {
@@ -37,7 +39,6 @@ export default function Home() {
           key={thumb.src}
           className={styles.heroThumb}
           src={thumb.src}
-          srcSet={thumb.srcSet}
           layout="fill"
           alt=""
         />

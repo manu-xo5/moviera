@@ -33,11 +33,15 @@ export default function Navbar() {
             onClick={() => setShowMenu(false)}
           />
         </li>
-        {["search", "discover", "watchlist", "github"].map((link) => (
-          <li className={styles.linkItem}>
+        {["search", "discover", "watchlist"].map((link) => (
+          <li key={link} className={styles.linkItem}>
             <Link href={"/" + link}>{link}</Link>
           </li>
         ))}
+
+        <li className={styles.linkItem}>
+          <a href="https://github.com/manu-xo5/moviera">github</a>
+        </li>
       </ul>
     </nav>
   );

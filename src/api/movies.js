@@ -90,7 +90,7 @@ export async function fetchSearchMovies({ page, language, query }) {
     language: language.join(", "),
     api_key: TMDB_API_KEY,
     include_adult: false,
-    query: encodeURI(query),
+    query: encodeURI(query.replace(/\s/g, "-")),
   });
 
   const res = await fetch(
