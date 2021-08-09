@@ -1,5 +1,5 @@
 import { CheckIcon, PlayIcon, PlusSmIcon } from "@heroicons/react/solid";
-import { fetchMovieVideo, fetchPoster } from "api/movies";
+import { fetchMovie, fetchMovieVideo, fetchPoster } from "api/movies";
 import Link from "components/link";
 import Player from "components/player";
 import { useMoviesCtx } from "context/movies";
@@ -15,7 +15,7 @@ const initialThumb = {
 
 export default function Home() {
   const { id } = useParams();
-  const { movies } = useMoviesCtx();
+  const { movies, setMovies } = useMoviesCtx();
   const [videos, setVideos] = useState(null);
   const { watchListData, setWatchListData } = useWatchListCtx();
   const [showPlayer, setShowPlayer] = useState(false);
@@ -23,13 +23,16 @@ export default function Home() {
 
   const movie = movies.find((m) => String(m.id) === String(id));
   const [thumb, setThumb] = useState({
-    src: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+    src: `https://image.tmdb.org/t/p/w500${movie?.poster_path}`,
   });
   const isInWatchList = !!watchListData.find((movieId) => movieId === id);
 
   useEffect(() => {
+    if (movie == null) {
+      fetchMovie({ id }).then((movie) => movie != null && setMovies([movie]));
+    }
     fetchMovieVideo({ movieId: id }).then(setVideos);
-  }, [id]);
+  }, [id, movie, setMovies]);
 
   return (
     <>
@@ -134,7 +137,7 @@ export default function Home() {
                           src={fetchPoster(youtubeMeta.key, "maxres")}
                           width={160}
                           height={100}
-                          alt="the witcher 2019 trailer 1"
+                          alt={youtubeMeta.name}
                           onClick={() => {
                             setShowPlayer(true);
                             setSelectedVideoIdx(i);
