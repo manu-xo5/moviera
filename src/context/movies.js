@@ -12,9 +12,11 @@ function MoviesProvider({ children }) {
 
   const setMovies = useCallback((newMovies) => {
     setMovies__RAW((prev) => {
-      const movies =
-        typeof newMovies === "function" ? newMovies(prev) : newMovies;
-      return filterBy("id", movies);
+      const movies = filterBy(
+        "id",
+        typeof newMovies === "function" ? newMovies(prev) : newMovies
+      );
+      return [...prev, ...movies];
     });
   }, []);
 

@@ -39,12 +39,18 @@
 }
 
 .languageOption {
-  padding: 1rem;
+  padding: 0.75rem 1rem;
   gap: 0.5rem;
   display: flex;
   align-items: center;
 
   background: var(--accent-muted);
+}
+
+.languageOption > input[type="checkbox"] {
+  margin: 0;
+  width: 1em;
+  height: 1em;
 }
 
 /* movie grid */

@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { ChevronDownIcon } from "@heroicons/react/solid";
+import { cloneElement, useEffect, useRef, useState } from "react";
 import styles from "styles/dropdown.module.css";
 
 export default function Dropdown({ label, children }) {
@@ -20,10 +21,24 @@ export default function Dropdown({ label, children }) {
     return () => window.removeEventListener("click", handleCloseDropdown);
   }, []);
 
+  const labelWithChevron = cloneElement(label, {
+    ...label.props,
+    children: [
+      label.props.children,
+      <ChevronDownIcon
+        className={`${styles.icon} ${show ? styles.iconRotate : ""}`}
+      />,
+    ],
+  });
+
   return (
     <div ref={parentRef}>
-      <span onClick={() => setShow((p) => !p)}>{label}</span>
-      <div style={{ display: show ? "" : "none" }} className={styles.dropdown}>
+      <span className={styles.label} onClick={() => setShow((p) => !p)}>
+        {labelWithChevron}
+      </span>
+      <div
+        className={`${styles.dropdown} ${show ? styles.open : styles.close}`}
+      >
         {children}
       </div>
     </div>

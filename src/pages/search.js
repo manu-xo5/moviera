@@ -7,7 +7,10 @@ import Dropdown from "components/dropdown";
 import { clsx } from "js/clsx";
 import MovieItem from "components/movie-item";
 
-const langs = ["en-IN", "en-US"];
+const langs = [
+  ["English (IN)", "en-IN"],
+  ["English (US)", "en-US"],
+];
 const initialFilters = {
   page: 1,
   query: "",
@@ -65,14 +68,14 @@ export default function Search() {
         />
 
         <Dropdown label={<p className={styles.languageLabel}>Language</p>}>
-          {langs.map((languageName) => (
+          {langs.map(([languageName, languageValue]) => (
             <label key={languageName} className={styles.languageOption}>
               <input
-                value={languageName}
+                value={languageValue}
                 name="language"
                 id="language"
                 type="checkbox"
-                defaultChecked={filters.language.includes(languageName)}
+                defaultChecked={filters.language.includes(languageValue)}
               />
               {languageName}
             </label>

@@ -17,8 +17,9 @@
   background: rgb(177, 83, 80);
   background: linear-gradient(
     90deg,
-    rgba(177, 83, 80, 1) 0%,
-    rgba(85, 86, 98, 1) 100%
+    hsl(2, 38%, 40%) 0%,
+    hsl(2, 38%, 60%) 50%,
+    hsl(235, 7%, 30%) 100%
   );
 
   background-clip: text;
