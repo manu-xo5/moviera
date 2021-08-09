@@ -2,6 +2,7 @@ import { CheckIcon, PlayIcon, PlusSmIcon } from "@heroicons/react/solid";
 import { fetchMovie, fetchMovieVideo, fetchPoster } from "api/movies";
 import Link from "components/link";
 import Player from "components/player";
+import Skeleton from "components/skeleton";
 import { useMoviesCtx } from "context/movies";
 import { Actions, useWatchListCtx } from "context/watchlist";
 import { useEffect, useState } from "react";
@@ -80,13 +81,19 @@ export default function Home() {
 
         <div className={styles.zIndex10}>
           {/* Title */}
-          <h1 className={styles.title}>
-            {movie.original_title.split(" ").map((subTitle) => (
-              <>
-                {subTitle} <br className={styles.br} />
-              </>
-            ))}
-          </h1>
+          {movie == null ? (
+            <>
+              <Skeleton width="25rem" height="3rem" borderRadius="0.75rem" />
+              <Skeleton
+                display="block"
+                width="10rem"
+                height="3rem"
+                borderRadius=".5rem"
+              />
+            </>
+          ) : (
+            <h1 className={styles.title}>{movie.original_title}</h1>
+          )}
 
           {/* Movie Info Wrapper */}
           <section className={styles.detailsWrapper}>
@@ -95,7 +102,11 @@ export default function Home() {
               <span className={styles.detailsTitle}></span>
 
               {/* Date | Genre */}
-              <small>{movie.release_date}</small>
+              {movie == null ? (
+                <Skeleton width="4rem" height="1rem" borderRadius=".2rem" />
+              ) : (
+                <small>{movie?.release_date}</small>
+              )}
               <span className={styles.pipeEntity}></span>
               <small>Fantasy, Drama</small>
             </div>
@@ -120,13 +131,7 @@ export default function Home() {
                   switch (true) {
                     case videos?.length === 0: {
                       return Array.from({ length: 3 }, () => (
-                        <img
-                          className={styles.trailerThumb}
-                          src="#"
-                          width={160}
-                          height={100}
-                          alt=""
-                        />
+                        <Skeleton width={160} height={100} />
                       ));
                     }
 
@@ -161,15 +166,45 @@ export default function Home() {
 
             <div className={styles.detailsFlex}>
               <span className={styles.detailsTitle}>The Story</span>
-              <p>
-                {movie.overview}
-                <Link
-                  href={`/movies/${id}/episodes`}
-                  className={styles.readMore}
-                >
-                  Read More &rarr;
-                </Link>
-              </p>
+              {movie == null ? (
+                <p style={{ minWidth: "80%" }}>
+                  <Skeleton
+                    marginBottom={6}
+                    display="block"
+                    width="100%"
+                    height={16}
+                  />
+                  <Skeleton
+                    marginBottom={6}
+                    display="block"
+                    width="95%"
+                    height={16}
+                  />
+                  <Skeleton
+                    marginBottom={6}
+                    display="block"
+                    width="90%"
+                    height={16}
+                  />
+                  <Skeleton
+                    marginBottom={6}
+                    display="block"
+                    width="100%"
+                    height={16}
+                  />
+                  <Skeleton display="block" width="50%" height={16} />
+                </p>
+              ) : (
+                <p>
+                  {movie?.overview}
+                  <Link
+                    href={`/movies/${id}/episodes`}
+                    className={styles.readMore}
+                  >
+                    Read More &rarr;
+                  </Link>
+                </p>
+              )}
             </div>
           </section>
         </div>
