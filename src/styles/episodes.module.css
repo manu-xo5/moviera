@@ -1,0 +1,28 @@
+.container {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  align-items: flex-start;
+  column-gap: 2rem;
+}
+
+.player {
+  width: 100%;
+  aspect-ratio: 16/9;
+}
+
+.video {
+  cursor: pointer;
+}
+
+.selectedVideo {
+  position: relative;
+}
+
+.selectedVideoPlaySymbol {
+  color: white;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}

@@ -1,4 +1,4 @@
-const TMDB_API_KEY = process.env.REACT_APP_TMDB_KEY;
+const TMDB_API_KEY = process.env.TMDB_KEY;
 
 /**
  * return a list of movies based on params object
@@ -101,20 +101,4 @@ export async function fetchSearchMovies({ page, language, query }) {
 
   const jsonData = await res.json();
   return jsonData.results;
-}
-
-/**
- * get a movie by id or null
- * @param {{ id: string }} param0
- * @returns {object | null}
- */
-export async function fetchMovie({ id }) {
-  const res = await fetch(
-    `https://api.themoviedb.org/3/movie/${id}?` +
-      `api_key=${TMDB_API_KEY}&language=en-US`
-  );
-
-  if (!res.ok) return null;
-
-  return await res.json();
 }
