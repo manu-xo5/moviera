@@ -29,6 +29,8 @@
   font-size: 4.5vw;
   font-weight: bolder;
   letter-spacing: 0.1rem;
+  line-height: 1;
+  cursor: pointer;
 }
 
 .link {
