@@ -14,9 +14,10 @@ function MoviesProvider({ children }) {
     setMovies__RAW((prev) => {
       const movies = filterBy(
         "id",
-        typeof newMovies === "function" ? newMovies(prev) : newMovies
+        typeof newMovies === "function" ? [...prev, ...newMovies(prev)] : [...prev, ...newMovies]
       );
-      return [...prev, ...movies];
+      
+      return movies
     });
   }, []);
 

@@ -2,7 +2,7 @@ import { Actions, useWatchListCtx } from "context/watchlist";
 import MovieItem from "components/movie-item";
 import { useMoviesCtx } from "context/movies";
 import { useEffect } from "react";
-import { fetchMovie } from "api/movies";
+// import { fetchMovie } from "api/movies";
 import homeS from "styles/home.module.css";
 import { MinusIcon } from "@heroicons/react/solid";
 import styles from "styles/watchlist.module.css";
@@ -15,20 +15,26 @@ export default function WatchList() {
     watchListData.includes(String(id))
   );
 
+  function fetchMovie({id}) {
+    return fetch(`/api/movie/${id}/details`).then(res => res.json());
+  }
+
   useEffect(() => {
     (async () => {
       const watchMovies = await Promise.all(
         watchListData.map((id) => fetchMovie({ id }))
       );
 
-      setMovies((prev) => [...watchMovies, ...prev]);
+      setMovies(watchMovies);
     })();
   }, [setMovies, watchListData]);
+
+
 
   return (
     <div>
       <h1 className={styles.title}>Watch List</h1>
-
+      
       {(() => {
         switch (true) {
           case movies.length > 0:
