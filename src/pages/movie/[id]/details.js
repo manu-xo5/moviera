@@ -1,12 +1,12 @@
-import { CheckIcon, PlayIcon, PlusSmIcon } from "@heroicons/react/solid";
-import { fetchPoster } from "api/movies";
-import Link from "components/link";
-import Player from "components/player";
-import Skeleton from "components/skeleton";
-import { Actions, useWatchListCtx } from "context/watchlist";
-import { useRouter } from "next/router";
-import { useState } from "react";
-import styles from "styles/movie-details.module.css";
+import { CheckIcon, PlayIcon, PlusSmIcon } from '@heroicons/react/solid';
+import { fetchPoster } from 'api/movies';
+import Link from 'components/link';
+import Player from 'components/player';
+import Skeleton from 'components/skeleton';
+import { Actions, useWatchListCtx } from 'context/watchlist';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import styles from 'styles/movie-details.module.css';
 
 export default function Home({ videos, details: movie }) {
   const { id } = useRouter().query;
@@ -17,20 +17,14 @@ export default function Home({ videos, details: movie }) {
   const [thumb, setThumb] = useState({
     src: `https://image.tmdb.org/t/p/w500${movie?.poster_path}`,
   });
-  console.log("333", movie);
+  
   const isInWatchList = !!watchListData.find((movieId) => movieId === id);
 
   return (
     <>
       <main className={styles.wrapper}>
         <span className={styles.heroBlur}></span>
-        <img
-          key={thumb.src}
-          className={styles.heroThumb}
-          src={thumb.src}
-          layout="fill"
-          alt=""
-        />
+        <img key={thumb.src} className={styles.heroThumb} src={thumb.src} layout="fill" alt="" />
 
         <div className={styles.ctaWrapper}>
           {/* Watch Now Button */}
@@ -56,9 +50,7 @@ export default function Home({ videos, details: movie }) {
               className={`${styles.ctaBtn} ${styles.watchListBtn}`}
               onClick={() => Actions.AddMovie(setWatchListData, id)}
             >
-              <PlusSmIcon
-                className={`${styles.ctaIcon} ${styles.watchListIcon}`}
-              />
+              <PlusSmIcon className={`${styles.ctaIcon} ${styles.watchListIcon}`} />
               Add to WatchList
             </button>
           )}
@@ -69,12 +61,7 @@ export default function Home({ videos, details: movie }) {
           {movie == null ? (
             <>
               <Skeleton width="25rem" height="3rem" borderRadius="0.75rem" />
-              <Skeleton
-                display="block"
-                width="10rem"
-                height="3rem"
-                borderRadius=".5rem"
-              />
+              <Skeleton display="block" width="10rem" height="3rem" borderRadius=".5rem" />
             </>
           ) : (
             <h1 className={styles.title}>{movie.original_title}</h1>
@@ -97,15 +84,17 @@ export default function Home({ videos, details: movie }) {
             </div>
 
             {/* Dynamic  Video Player */}
-            <div className={showPlayer ? styles.playerShow : styles.playerHide}>
-              <Player
-                key={showPlayer}
-                videos={videos}
-                onClose={() => setShowPlayer(false)}
-                setSelectedVideoIdx={setSelectedVideoIdx}
-                selectedVideoIdx={selectedVideoIdx}
-              />
-            </div>
+            {videos.length > 0 ? (
+              <div className={showPlayer ? styles.playerShow : styles.playerHide}>
+                <Player
+                  key={showPlayer}
+                  videos={videos}
+                  onClose={() => setShowPlayer(false)}
+                  setSelectedVideoIdx={setSelectedVideoIdx}
+                  selectedVideoIdx={selectedVideoIdx}
+                />
+              </div>
+            ) : null}
 
             {/* Trailers images */}
             <div className={styles.detailsFlex}>
@@ -114,17 +103,11 @@ export default function Home({ videos, details: movie }) {
               <div className={styles.trailerThumbWrapper}>
                 {(() => {
                   switch (true) {
-                    case videos?.length === 0: {
-                      return Array.from({ length: 3 }, () => (
-                        <Skeleton width={160} height={100} />
-                      ));
-                    }
-
                     case videos?.length > 0: {
                       return videos.map((youtubeMeta, i) => (
                         <img
                           className={styles.trailerThumb}
-                          src={fetchPoster(youtubeMeta.key, "maxres")}
+                          src={fetchPoster(youtubeMeta.key, 'maxres')}
                           width={160}
                           height={100}
                           alt={youtubeMeta.name}
@@ -152,40 +135,17 @@ export default function Home({ videos, details: movie }) {
             <div className={styles.detailsFlex}>
               <span className={styles.detailsTitle}>The Story</span>
               {movie == null ? (
-                <p style={{ minWidth: "80%" }}>
-                  <Skeleton
-                    marginBottom={6}
-                    display="block"
-                    width="100%"
-                    height={16}
-                  />
-                  <Skeleton
-                    marginBottom={6}
-                    display="block"
-                    width="95%"
-                    height={16}
-                  />
-                  <Skeleton
-                    marginBottom={6}
-                    display="block"
-                    width="90%"
-                    height={16}
-                  />
-                  <Skeleton
-                    marginBottom={6}
-                    display="block"
-                    width="100%"
-                    height={16}
-                  />
+                <p style={{ minWidth: '80%' }}>
+                  <Skeleton marginBottom={6} display="block" width="100%" height={16} />
+                  <Skeleton marginBottom={6} display="block" width="95%" height={16} />
+                  <Skeleton marginBottom={6} display="block" width="90%" height={16} />
+                  <Skeleton marginBottom={6} display="block" width="100%" height={16} />
                   <Skeleton display="block" width="50%" height={16} />
                 </p>
               ) : (
                 <p>
                   {movie?.overview}
-                  <Link
-                    href={`/movie/${id}/episodes`}
-                    className={styles.readMore}
-                  >
+                  <Link href={`/movie/${id}/episodes`} className={styles.readMore}>
                     &nbsp; Read More &rarr;
                   </Link>
                 </p>
@@ -212,12 +172,10 @@ export default function Home({ videos, details: movie }) {
 export async function getServerSideProps(req) {
   let props = {};
   await Promise.all([
-    fetch(
-      `http://localhost:3000/api/movie/${req.query.id.toString()}/video`
-    ).then((r) => r.json()),
-    fetch(
-      `http://localhost:3000/api/movie/${req.query.id.toString()}/details`
-    ).then((r) => r.json()),
+    fetch(`http://localhost:3000/api/movie/${req.query.id.toString()}/video`).then((r) => r.json()),
+    fetch(`http://localhost:3000/api/movie/${req.query.id.toString()}/details`).then((r) =>
+      r.json()
+    ),
   ]).then(([videos, details]) => {
     props.videos = videos.results;
     props.details = details;
@@ -229,6 +187,6 @@ export async function getServerSideProps(req) {
 }
 
 const initialThumb = {
-  src: "https://m.media-amazon.com/images/M/MV5BMTYyNzVhNTktZmIyMC00MDU1LWJmMjMtYmEzYmIyMDdjZTAwXkEyXkFqcGdeQXVyMTEyMjM2NDc2._V1_FMjpg_UX1280_.jpg",
-  srcSet: "",
+  src: 'https://m.media-amazon.com/images/M/MV5BMTYyNzVhNTktZmIyMC00MDU1LWJmMjMtYmEzYmIyMDdjZTAwXkEyXkFqcGdeQXVyMTEyMjM2NDc2._V1_FMjpg_UX1280_.jpg',
+  srcSet: '',
 };

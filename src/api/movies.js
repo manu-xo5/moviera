@@ -3,7 +3,7 @@ const TMDB_API_KEY = process.env.TMDB_KEY;
 /**
  * return a list of movies based on params object
  * @param {{ page: number }} param0
- * @returns { Promise<any[]> }
+ * @returns { Promise<any> }
  */
 export async function fetchDiscoverMovies({
   page = 1,
@@ -27,10 +27,12 @@ export async function fetchDiscoverMovies({
     `https://api.themoviedb.org/3/discover/movie?${params.toString()}`
   );
 
+
   const jsonData = await res.json();
+  console.log(jsonData)
 
   if (!res.ok) return null;
-  return jsonData.results;
+  return jsonData
 }
 
 /**

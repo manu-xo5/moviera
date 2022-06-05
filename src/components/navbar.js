@@ -33,7 +33,12 @@ export default function Navbar() {
             onClick={() => setShowMenu(false)}
           />
         </li>
-        {["search", "discover", "watchlist"].map((link) => (
+
+        <li className={styles.linkItem}>
+          <Link href="/discover/28">discover</Link>
+        </li>
+        
+        {["search",  "watchlist"].map((link) => (
           <li key={link} className={styles.linkItem}>
             <Link href={"/" + link}>{link}</Link>
           </li>

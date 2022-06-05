@@ -1,8 +1,9 @@
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useRouter } from "next/router";
 
 export default function ScrollWrapper({ children }) {
-  const { pathname } = useLocation();
+  const { pathname } = useRouter();
+
 
   useEffect(() => {
     const hash = window.location.hash;

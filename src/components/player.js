@@ -5,6 +5,7 @@ import {
 } from "@heroicons/react/outline";
 import { StarIcon as SolidStarIcon } from "@heroicons/react/solid";
 import { Actions, useWatchListCtx } from "context/watchlist";
+import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import playerS from "styles/player.module.css";
@@ -16,7 +17,7 @@ export default function Player({
   setSelectedVideoIdx,
 }) {
   const { watchListData, setWatchListData } = useWatchListCtx();
-  const { id } = useParams();
+  const { id } = useRouter().query;
 
   const isInWatchList = !!watchListData.find((movieId) => movieId === id);
 
