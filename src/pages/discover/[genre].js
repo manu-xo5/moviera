@@ -1,5 +1,3 @@
-import { fetchGenres } from 'api/genres';
-import { fetchDiscoverMovies } from 'api/movies';
 import Chip from 'components/chip';
 import Link from 'components/link';
 import { useEffect, useState } from 'react';
