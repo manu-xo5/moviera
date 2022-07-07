@@ -178,7 +178,7 @@ export async function getServerSideProps(req) {
   const params = new URLSearchParams(props.filters);
 
   props.searchData = await fetch(
-    "http://localhost:3000/api/search?" + params.toString()
+    "https://" + process.env.DOMAIN + "/api/search?" + params.toString()
   ).then((r) => r.json());
 
   return { props };

@@ -16,7 +16,7 @@ export default function Home({ trendingMovies, movies: moviesInit }: HomeProps) 
   const [error, setError] = useState('');
 
   useEffect(() => {
-    fetch('http://localhost:3000/api/discover?page=1&genre=')
+    fetch('/api/discover?page=1&genre=')
       .then((r) => r.json())
       .then((data) => setMovies((prev) => [...prev, ...data.results]))
       .catch(() => setError('Error'));
