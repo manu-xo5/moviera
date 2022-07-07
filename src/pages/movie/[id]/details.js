@@ -1,5 +1,4 @@
 import { CheckIcon, PlayIcon, PlusSmIcon } from '@heroicons/react/solid';
-import { fetchPoster } from 'api/movies';
 import Link from 'components/link';
 import Player from 'components/player';
 import Skeleton from 'components/skeleton';
@@ -7,6 +6,16 @@ import { Actions, useWatchListCtx } from 'context/watchlist';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import styles from 'styles/movie-details.module.css';
+
+/**
+ *
+ * @param {number | string} youtubeKey
+ * @param {"sd" | "hq" | "maxres"} quality
+ * @returns {string}
+ */
+export function fetchPoster(youtubeKey, quality = "sd") {
+  return `https://i.ytimg.com/vi_webp/${youtubeKey}/${quality}default.webp`;
+}
 
 export default function Home({ videos, details: movie }) {
   const { id } = useRouter().query;

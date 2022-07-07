@@ -1,10 +1,12 @@
-import { fetchMovieVideo, fetchPoster } from 'api/movies';
-import { useMoviesCtx } from 'context/movies';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import s from 'styles/episodes.module.css';
 
 const fetchYoutubeFrame = (youtubeKey) => `https://www.youtube.com/embed/${youtubeKey}`;
+
+export function fetchPoster(youtubeKey, quality = "sd") {
+  return `https://i.ytimg.com/vi_webp/${youtubeKey}/${quality}default.webp`;
+}
 
 export default function MovieEpisodes() {
   const { id } = useRouter().query;
