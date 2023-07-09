@@ -181,8 +181,8 @@ export default function Home({ videos, details: movie }) {
 export async function getServerSideProps(req) {
   let props = {};
   await Promise.all([
-    fetch(`https://${process.env.DOMAIN}/api/movie/${req.query.id.toString()}/video`).then((r) => r.json()),
-    fetch(`https://${process.env.DOMAIN}/api/movie/${req.query.id.toString()}/details`).then((r) =>
+    fetch(`http://${process.env.DOMAIN}/api/movie/${req.query.id.toString()}/video`).then((r) => r.json()),
+    fetch(`http://${process.env.DOMAIN}/api/movie/${req.query.id.toString()}/details`).then((r) =>
       r.json()
     ),
   ]).then(([videos, details]) => {

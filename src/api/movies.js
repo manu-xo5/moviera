@@ -84,7 +84,7 @@ export async function fetchTrendingMovies() {
 
 /**
  * search movie by fuzzy title i.e. query
- * @param {{ page: number, language: ("en-IN" | "en-US")[], query: string }} param0
+ * @param {{ page: number | string, language: string[], query: string }} param0
  */
 export async function fetchSearchMovies({ page, language, query }) {
   const params = new URLSearchParams({
@@ -103,4 +103,9 @@ export async function fetchSearchMovies({ page, language, query }) {
 
   const jsonData = await res.json();
   return jsonData.results;
+}
+
+
+export default function handler(_,res) {
+  return res.status(200)
 }

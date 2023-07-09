@@ -1,72 +1,40 @@
-import Dropdown from "components/dropdown";
-import Link from "components/link";
-import MovieItem from "components/movie-item";
-import { clsx } from "js/clsx";
-import React, { FormEvent, useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import styles from "styles/search.module.css";
+import Dropdown from 'components/dropdown'
+import Link from 'components/link'
+import MovieItem from 'components/movie-item'
+import { clsx } from 'js/clsx'
+import React, { FormEvent, useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
+import styles from 'styles/search.module.css'
+import { fetchSearchMovies } from 'api/movies'
 
 const langs = [
-  ["English (IN)", "en-IN"],
-  ["English (US)", "en-US"],
-];
+  ['English (IN)', 'en-IN'],
+  ['English (US)', 'en-US'],
+]
 
-const initialFilters = {
-  page: 1,
-  query: "",
-  language: ["en-US"],
-};
+export default function Search({ searchData: searchDataInit }) {
+  const [searchData, setSearchData] = useState(searchDataInit?.results)
+  const [filters, setFilters] = useState({ query: '', languages: [], page: 1 })
 
-export default function Search({
-  searchData: searchDataInit,
-  filters: filtersInit,
-}) {
-  const [searchData, setSearchData] = useState(searchDataInit?.results);
-  const [filters, setFilters] = useState(filtersInit);
-  const router = useRouter();
+  const hasNextPage = searchData != null && searchData.length > 19
 
-  const hasNextPage = searchData != null && searchData.length > 19;
-
-  function handleSearch(ev: FormEvent<HTMLFormElement>) {
-    ev.preventDefault();
-    // console.log(ev.currentTarget);
-    const query = ev.currentTarget.elements.namedItem(
-      "query"
-    ) as HTMLInputElement;
-
-    const languagesInputElms = ev.currentTarget.elements.namedItem(
-      "language"
-    ) as Iterable<HTMLInputElement>;
-
-    const languages = Array.from(languagesInputElms)
-      .filter((langInput) => langInput.checked)
-      .map((langInput) => langInput.value)
-      .join(",");
+  async function handleSearch(ev: FormEvent<HTMLFormElement>) {
+    ev?.preventDefault()
 
     const newFilters = {
-      query: query.value,
-      language: languages,
-      page: "1",
-    };
-    const params = new URLSearchParams(newFilters);
+      query: filters.query,
+      language: filters.languages,
+      page: filters.page,
+    }
 
-    router.push("/search?" + params.toString());
+    await fetch('/api/search?' + new URLSearchParams(newFilters).toString())
+      .then((r) => r.json())
+      .then((r) => setSearchData(r.results))
 
-    setFilters(newFilters);
+    // await fetchSearchMovies(newFilters).then((r) => console.log({ r: r.results }))
   }
 
-  useEffect(() => {
-    // check if search query is empty
-    if (!filters.query) return;
-    // check filter are initail so first render
-    if (filters === filtersInit) return;
-
-    const params = new URLSearchParams(filters);
-
-    fetch("http://localhost:3000/api/search?" + params.toString())
-      .then((r) => r.json())
-      .then((data) => setSearchData(data.results));
-  }, [filters, filtersInit]);
+  console.log(filters)
 
   return (
     <div>
@@ -79,23 +47,28 @@ export default function Search({
           className={styles.searchInput}
           placeholder="movie name"
           name="query"
-          defaultValue={filters.query}
+          value={filters.query}
+          onChange={(ev) => setFilters((prev) => ({ ...prev, query: ev.target.value }))}
         />
 
-        <Dropdown label={<p className={styles.languageLabel}>Language</p>}>
-          {langs.map(([languageName, languageValue]) => (
-            <label key={languageName} className={styles.languageOption}>
-              <input
-                value={languageValue}
-                name="language"
-                id="language"
-                type="checkbox"
-                defaultChecked={filters.language.includes(languageValue)}
-              />
-              {languageName}
-            </label>
-          ))}
-        </Dropdown>
+        <fieldset
+          style={{ border: 'none', padding: 0, margin: 0 }}
+          onChange={(ev) => {
+            const langs = Array.from(ev.currentTarget.elements)
+              .filter((input) => input.checked)
+              .map((input) => input.value)
+            setFilters((prev) => ({ ...prev, languages: langs }))
+          }}
+        >
+          <Dropdown label={<p className={styles.languageLabel}>Language</p>}>
+            {langs.map(([languageName, languageValue]) => (
+              <label key={languageName} className={styles.languageOption}>
+                <input value={languageValue} name="language" id="language" type="checkbox" />
+                {languageName}
+              </label>
+            ))}
+          </Dropdown>
+        </fieldset>
 
         <button type="submit" className={styles.searchBtn}>
           Search
@@ -106,10 +79,7 @@ export default function Search({
         <ul className={styles.movieGrid}>
           {searchData.map((movie) => (
             <li key={movie.id}>
-              <Link
-                href={`/movie/${movie.id}/details`}
-                className={styles.movieGridItem}
-              >
+              <Link href={`/movie/${movie.id}/details`} className={styles.movieGridItem}>
                 <a>
                   <MovieItem
                     posterPath={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
@@ -123,7 +93,7 @@ export default function Search({
           ))}
         </ul>
       ) : (
-        <p className={clsx("text-center", styles.error)}>
+        <p className={clsx('text-center', styles.error)}>
           ..** Nothing matched to your query. try different spelling maybe. **..
         </p>
       )}
@@ -133,22 +103,24 @@ export default function Search({
         <div className={styles.pageControlWrapper}>
           <button
             className={styles.pageControlBtn}
-            onClick={() =>
+            onClick={() => {
               setFilters((prev) => ({ ...prev, page: prev.page - 1 }))
-            }
+              handleSearch()
+            }}
             type="button"
             disabled={filters.page === 1}
           >
             Prev
           </button>
 
-          <span>{filters.page}</span>
+          <span> Page No: {filters.page} </span>
 
           <button
             className={styles.pageControlBtn}
-            onClick={() =>
+            onClick={() => {
               setFilters((prev) => ({ ...prev, page: prev.page + 1 }))
-            }
+              handleSearch()
+            }}
             type="button"
             disabled={!hasNextPage}
           >
@@ -157,29 +129,5 @@ export default function Search({
         </div>
       )}
     </div>
-  );
-}
-
-export async function getServerSideProps(req) {
-  let props: any = {};
-  const page = req.query.page?.toString() || initialFilters.page;
-  const query = req.query.query?.toString() || initialFilters.query;
-  const language = req.query.language?.toString() || initialFilters.language;
-
-  props.filters = {
-    page,
-    query,
-    language,
-  };
-
-  // if search is empty return;
-  if (!query) return { props };
-
-  const params = new URLSearchParams(props.filters);
-
-  props.searchData = await fetch(
-    "https://" + process.env.DOMAIN + "/api/search?" + params.toString()
-  ).then((r) => r.json());
-
-  return { props };
+  )
 }

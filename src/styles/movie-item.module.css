@@ -5,6 +5,7 @@
 
 .posterImg {
   width: 100%;
+  aspect-ratio: 0.66;
 
   transition: transform 200ms ease-in;
   transform-origin: top center;

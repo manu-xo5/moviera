@@ -47,7 +47,7 @@
   background: var(--accent-muted);
 }
 
-.languageOption > input[type="checkbox"] {
+.languageOption > input[type='checkbox'] {
   margin: 0;
   width: 1em;
   height: 1em;
@@ -75,7 +75,7 @@
   padding-top: 4rem;
 
   display: flex;
-  max-width: 15rem;
+  max-width: 17rem;
   justify-content: space-between;
   align-items: center;
 }
